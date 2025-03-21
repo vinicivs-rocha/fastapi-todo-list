@@ -25,3 +25,6 @@ def run_migrations():
 
 
 SessionDep = Annotated[Session, Depends(get_session)]
+
+if __name__ == "__main__":
+    run_migrations()
