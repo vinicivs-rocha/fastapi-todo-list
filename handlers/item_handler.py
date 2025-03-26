@@ -20,10 +20,8 @@ def create_item(item: ItemCreate, item_service: ItemServiceDep):
 
 
 @router.get("/", response_model=list[ItemPublic])
-def list_items(
-    item_service: ItemServiceDep, page=0, length=10, query: str | None = None
-):
-    return item_service.list_items(page=page, length=length, query=query)
+def list_items(item_service: ItemServiceDep, query: str | None = None):
+    return item_service.list_items(query=query)
 
 
 @router.put("/{item_id}")

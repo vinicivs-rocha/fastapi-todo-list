@@ -24,13 +24,8 @@ class ItemService:
         self.session.refresh(db_item)
         return db_item
 
-    def list_items(self, page=0, length=10, query: str | None = None) -> list[Item]:
-        statement = (
-            select(Item)
-            .limit(length)
-            .offset(page * length)
-            .where(Item.deleted_at == None)
-        )
+    def list_items(self, query: str | None = None) -> list[Item]:
+        statement = select(Item).where(Item.deleted_at == None)
 
         if query is not None:
             statement = statement.where(
