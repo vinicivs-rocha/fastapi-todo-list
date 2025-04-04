@@ -26,6 +26,13 @@ def list_items(
     return item_service.list_items(query=query, resolved=resolved)
 
 
+@router.get("/count")
+def count_items(item_service: ItemServiceDep, resolved: bool = False):
+    return {
+        "count": item_service.count_items(resolved=resolved),
+    }
+
+
 @router.put("/{item_id}")
 def update_item(item_id: UUID, item: ItemUpdate, item_service: ItemServiceDep):
     item_service.update_item(item_id=item_id, item=item)

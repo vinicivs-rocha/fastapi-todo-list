@@ -3,6 +3,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import HTTPException, Depends
+from sqlalchemy import func
 from sqlmodel import select, or_, col
 
 from db.pg import SessionDep
@@ -40,6 +41,14 @@ class ItemService:
             )
 
         return self.session.exec(statement).all()
+
+    def count_items(self, resolved: bool = False) -> int:
+        statement = (
+            select(func.count(Item.id))
+            .where(Item.deleted_at == None)
+            .where(Item.resolved == resolved)
+        )
+        return self.session.exec(statement).one()
 
     def update_item(self, item_id: UUID, item: ItemUpdate) -> None:
         db_item = self.session.exec(

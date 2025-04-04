@@ -95,6 +95,15 @@ def test_list_items_query():
         assert False, "created_at is not a valid datetime"
 
 
+def test_items_count():
+    response = test_client.get("/items/count")
+    assert response.status_code == 200
+    response_data = response.json()
+    assert isinstance(response_data, dict)
+    assert isinstance(response_data["count"], int)
+    assert response_data["count"] >= 0
+
+
 def test_update_item():
     list_response = test_client.get("/items/")
     assert list_response.status_code == 200, "Failed to list items"
@@ -112,7 +121,7 @@ def test_update_item():
     assert response.status_code == 200, response.text
     response_data = response.json()
     assert response_data["message"] == "Item updated successfully"
-    updated_list_response = test_client.get("/items/")
+    updated_list_response = test_client.get("/items/", params={"resolved": True})
     updated_list_response_data: list = updated_list_response.json()
     updated_item = next(
         (
